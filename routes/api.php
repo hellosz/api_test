@@ -19,4 +19,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'test', 'middleware' => []], function () {
     Route::any('createAdlink', 'TestController@createAdlink');
+
+    Route::get("get_link", "LinkController@getLink");
 });
