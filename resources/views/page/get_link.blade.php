@@ -96,7 +96,8 @@
                     return;
                 }
                 var settings = {
-                    "url": "http://8.135.120.218:8000/test/createAdlink",
+                    // "url": "http://8.135.120.218:8000/test/createAdlink",
+                    "url": "https://www.hellosz.top/test/createAdlink",
                     "method": "POST",
                     "timeout": 0,
                     "headers": {
