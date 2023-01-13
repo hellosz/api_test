@@ -22,7 +22,7 @@
                           show-word-limit>
                 </el-input>
             </el-form-item>
-
+        </el-form>
 
 
     </div>
@@ -35,8 +35,23 @@
 
 
     <!--弹窗-->
-    <el-dialog :visible.sync="visible" title="Hello world">
-        <p>Try Element</p>
+    <el-dialog :visible.sync="visible" title="Result">
+        <template>
+            <el-tabs v-model="form.activeName">
+                <el-tab-pane label="Standard Link" name="first">
+                    <el-input id="link_inputid" type="textarea" v-model="form.StandardLink" :rows="5" disabled>
+                    </el-input>
+                </el-tab-pane>
+                <el-tab-pane label="HTML" name="second">
+                    <el-input id="html_inputid" type="textarea" v-model="form.Html" :rows="5" disabled></el-input>
+                </el-tab-pane>
+            </el-tabs>
+
+            <div style="text-align:center;padding-top: 10px;">
+                <el-button type="primary" @click="this.copyData">Copy</el-button>
+            </div>
+
+        </template>
     </el-dialog>
 
 
@@ -56,39 +71,16 @@
                 form: {
                     url: '',
                     Link: '',
-                    date1: '',
-                    date2: '',
-                    delivery: false,
-                    type: [],
-                    resource: '',
-                    desc: ''
+                    StandardLink: '',
+                    Html: '',
+                    activeName: 'first'
                 }
             }
         },
         methods: {
             submit() {
-                var settings = {
-                    // "url": "http://127.0.0.1:8003/test/createAdlink",
-                    "url": "http://8.135.120.218:8000/test/createAdlink",
-                    "method": "POST",
-                    "timeout": 0,
-                    "headers": {
-                        "Access-Control-Allow-Origin":"*",
-                        "Access-Control-Allow-Methods": "POST, GET, PUT, OPTIONS, DELETE",
-                    },
-                    "data": JSON.stringify({
-                        "link": "http://www.patpat.com",
-                        "name": "link_test"
-                    }),
-                };
 
 
-
-                $.ajax(settings).done(function (response) {
-                    console.log(response);
-                });
-
-                return;
                 if (!this.form.url) {
                     this.$message({
                         message: 'Please Enter the URL!',
@@ -103,10 +95,53 @@
                     });
                     return;
                 }
-                this.visible = true;
+                var settings = {
+                    "url": "http://8.135.120.218:8000/test/createAdlink",
+                    "method": "POST",
+                    "timeout": 0,
+                    "headers": {
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Methods": "POST, GET, PUT, OPTIONS, DELETE",
+                    },
+                    "data": JSON.stringify({
+                        "link": this.form.url,
+                        "name": this.form.Link
+                    }),
+                };
+
+                $.ajax(settings).done(function (response) {
+                    console.log(response);
+                    var id = response.data.adlinkId;
+                    this.visible = true;
+                    this.form.StandardLink = this.form.url + "?adlk_id=" + id;
+                    this.form.Html = "<a target='_blank' href='" + this.form.StandardLink + "'>" +
+                        this.form.Link + "</a>";
+                });
+
+
 
             },
-        }
+            copyData() {
+
+                const range = document.createRange(); //创建range对象
+                var htmlid = "link_inputid";
+                if (this.form.activeName == "second") {
+                    htmlid = "html_inputid";
+                }
+                range.selectNode(document.getElementById(htmlid)); //获取复制内容的 id 选择器
+                const selection = window.getSelection(); //创建 selection对象
+                if (selection.rangeCount > 0) {
+                    selection.removeAllRanges(); //如果页面已经有选取了的话，会自动删除这个选区，没有选区的话，会把这个选取加入选区
+                }
+                selection.addRange(range); //将range对象添加到selection选区当中，会高亮文本块
+                document.execCommand('copy'); //复制选中的文字到剪贴板
+                this.$message({
+                    message: '复制成功',
+                    type: 'success'
+                });
+                selection.removeRange(range); // 移除选中的元素
+            }
+        },
     })
 </script>
 
