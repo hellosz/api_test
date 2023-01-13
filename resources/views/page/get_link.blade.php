@@ -61,7 +61,7 @@
 <script src="https://unpkg.com/vue@2/dist/vue.js"></script>
 <!-- import JavaScript -->
 <script type="text/javascript" src="https://unpkg.com/element-ui/lib/index.js"></script>
-<script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-2.1.4.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.1.4.min.js"></script>
 <script>
     new Vue({
         el: '#app',
