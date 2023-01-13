@@ -109,13 +109,15 @@
                     }),
                 };
 
+                var that = this;
+
                 $.ajax(settings).done(function (response) {
                     console.log(response);
                     var id = response.data.adlinkId;
-                    this.visible = true;
-                    this.form.StandardLink = this.form.url + "?adlk_id=" + id;
-                    this.form.Html = "<a target='_blank' href='" + this.form.StandardLink + "'>" +
-                        this.form.Link + "</a>";
+                    that.visible = true;
+                    that.form.StandardLink = that.form.url + "?adlk_id=" + id;
+                    that.form.Html = "<a target='_blank' href='" + that.form.StandardLink + "'>" +
+                        that.form.Link + "</a>";
                 });
 
 
