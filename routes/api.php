@@ -21,4 +21,6 @@ Route::group(['prefix' => 'test', 'middleware' => []], function () {
     Route::any('createAdlink', 'TestController@createAdlink');
 
     Route::get("get_link", "LinkController@getLink");
+
+    Route::any('commission', "TestController@commission");
 });
